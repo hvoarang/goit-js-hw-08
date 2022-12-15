@@ -2,30 +2,28 @@
 import { galleryItems } from './gallery-items';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import '../css/common.css';
-import '../css/01-gallery.css';
+// Change code below this line
 
-const createItemsMarkup = galleryItems
-  .map(({ preview, original, description }) => {
-    return `
-    <a class="gallery__item" href="${original}">
-    <img class="gallery__image" src="${preview}" alt="${description}" />
-  </a>
-      `;
-  })
-  .join('');
+console.log(galleryItems);
 
-const alleryContainerEl = document.querySelector('.gallery');
-alleryContainerEl.insertAdjacentHTML('beforeend', createItemsMarkup);
-let lightbox = new SimpleLightbox('.gallery a', {
-  scrollZoom: false,
-  captionDelay: 250,
-  captionsData: 'alt',
-  doubleTapZoom: 1,
+const gallery = document.querySelector(`.gallery`);
+const item = [];
+
+galleryItems.forEach(element => {
+  const galleryLink = document.createElement(`a`);
+  galleryLink.className = `gallert__link`;
+  galleryLink.href = element.original;
+  const galleryImage = document.createElement(`img`);
+  galleryImage.className = 'gallery__image';
+  galleryImage.src = element.preview;
+  galleryImage.setAttribute('title', element.description);
+  galleryImage.alt = element.description;
+
+  galleryLink.append(galleryImage);
+  item.push(galleryLink);
 });
-alleryContainerEl.addEventListener('click', event => {
-  event.preventDefault();
-  if (!event.target.classList.contains('gallery__image')) {
-    return;
-  }
+gallery.append(...item);
+
+new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
 });
